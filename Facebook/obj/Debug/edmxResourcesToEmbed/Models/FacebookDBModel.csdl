@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FacebookDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="CommentLike">
+    <Key>
+      <PropertyRef Name="userID" />
+    </Key>
+    <Property Name="commentID" Type="Int32" />
+    <Property Name="userID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Comment" Relationship="Self.FK__CommentLi__comme__3C69FB99" FromRole="CommentLikes" ToRole="Comments" />
+    <NavigationProperty Name="User" Relationship="Self.FK__CommentLi__userI__5FB337D6" FromRole="CommentLikes" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Cdate" Type="DateTime" Precision="3" />
+    <Property Name="content" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="postID" Type="Int32" />
+    <Property Name="userID" Type="Int32" />
+    <NavigationProperty Name="CommentLikes" Relationship="Self.FK__CommentLi__comme__3C69FB99" FromRole="Comments" ToRole="CommentLikes" />
+    <NavigationProperty Name="Post" Relationship="Self.FK__Comments__postID__37A5467C" FromRole="Comments" ToRole="Posts" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Comments__userID__5EBF139D" FromRole="Comments" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Friend">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="userID" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Friends__userID__60A75C0F" FromRole="Friends" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="PostLike">
+    <Key>
+      <PropertyRef Name="userID" />
+    </Key>
+    <Property Name="postID" Type="Int32" />
+    <Property Name="userID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Post" Relationship="Self.FK__PostLikes__postI__2D27B809" FromRole="PostLikes" ToRole="Posts" />
+    <NavigationProperty Name="User" Relationship="Self.FK__PostLikes__userI__5DCAEF64" FromRole="PostLikes" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="PostPhoto">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="postID" Type="Int32" />
+    <NavigationProperty Name="Post" Relationship="Self.FK__PostPhoto__postI__2B3F6F97" FromRole="PostPhotos" ToRole="Posts" />
+  </EntityType>
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="content" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="date" Type="DateTime" Precision="3" />
+    <Property Name="userID" Type="Int32" />
+    <NavigationProperty Name="Comments" Relationship="Self.FK__Comments__postID__37A5467C" FromRole="Posts" ToRole="Comments" />
+    <NavigationProperty Name="PostLikes" Relationship="Self.FK__PostLikes__postI__2D27B809" FromRole="Posts" ToRole="PostLikes" />
+    <NavigationProperty Name="PostPhotos" Relationship="Self.FK__PostPhoto__postI__2B3F6F97" FromRole="Posts" ToRole="PostPhotos" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Posts__userID__5CD6CB2B" FromRole="Posts" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Fname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Lname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="Int32" />
+    <Property Name="BirthDate" Type="DateTime" Precision="3" />
+    <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="CommentLike" Relationship="Self.FK__CommentLi__userI__5FB337D6" FromRole="Users" ToRole="CommentLikes" />
+    <NavigationProperty Name="Comments" Relationship="Self.FK__Comments__userID__5EBF139D" FromRole="Users" ToRole="Comments" />
+    <NavigationProperty Name="Friends" Relationship="Self.FK__Friends__userID__60A75C0F" FromRole="Users" ToRole="Friends" />
+    <NavigationProperty Name="PostLike" Relationship="Self.FK__PostLikes__userI__5DCAEF64" FromRole="Users" ToRole="PostLikes" />
+    <NavigationProperty Name="Posts" Relationship="Self.FK__Posts__userID__5CD6CB2B" FromRole="Users" ToRole="Posts" />
+  </EntityType>
+  <Association Name="FK__CommentLi__comme__3C69FB99">
+    <End Role="Comments" Type="Self.Comment" Multiplicity="0..1" />
+    <End Role="CommentLikes" Type="Self.CommentLike" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Comments">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CommentLikes">
+        <PropertyRef Name="commentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CommentLi__userI__5FB337D6">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="CommentLikes" Type="Self.CommentLike" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CommentLikes">
+        <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Comments__postID__37A5467C">
+    <End Role="Posts" Type="Self.Post" Multiplicity="0..1" />
+    <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Posts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comments">
+        <PropertyRef Name="postID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Comments__userID__5EBF139D">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comments">
+        <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Friends__userID__60A75C0F">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Friends" Type="Self.Friend" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Friends">
+        <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PostLikes__postI__2D27B809">
+    <End Role="Posts" Type="Self.Post" Multiplicity="0..1" />
+    <End Role="PostLikes" Type="Self.PostLike" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Posts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PostLikes">
+        <PropertyRef Name="postID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PostLikes__userI__5DCAEF64">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="PostLikes" Type="Self.PostLike" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PostLikes">
+        <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PostPhoto__postI__2B3F6F97">
+    <End Role="Posts" Type="Self.Post" Multiplicity="0..1" />
+    <End Role="PostPhotos" Type="Self.PostPhoto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Posts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PostPhotos">
+        <PropertyRef Name="postID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Posts__userID__5CD6CB2B">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Posts" Type="Self.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Posts">
+        <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FacebookDatabaseEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CommentLikes" EntityType="Self.CommentLike" />
+    <EntitySet Name="Comments" EntityType="Self.Comment" />
+    <EntitySet Name="Friends" EntityType="Self.Friend" />
+    <EntitySet Name="PostLikes" EntityType="Self.PostLike" />
+    <EntitySet Name="PostPhotos" EntityType="Self.PostPhoto" />
+    <EntitySet Name="Posts" EntityType="Self.Post" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK__CommentLi__comme__3C69FB99" Association="Self.FK__CommentLi__comme__3C69FB99">
+      <End Role="Comments" EntitySet="Comments" />
+      <End Role="CommentLikes" EntitySet="CommentLikes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CommentLi__userI__5FB337D6" Association="Self.FK__CommentLi__userI__5FB337D6">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="CommentLikes" EntitySet="CommentLikes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Comments__postID__37A5467C" Association="Self.FK__Comments__postID__37A5467C">
+      <End Role="Posts" EntitySet="Posts" />
+      <End Role="Comments" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Comments__userID__5EBF139D" Association="Self.FK__Comments__userID__5EBF139D">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Comments" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Friends__userID__60A75C0F" Association="Self.FK__Friends__userID__60A75C0F">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Friends" EntitySet="Friends" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PostLikes__postI__2D27B809" Association="Self.FK__PostLikes__postI__2D27B809">
+      <End Role="Posts" EntitySet="Posts" />
+      <End Role="PostLikes" EntitySet="PostLikes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PostLikes__userI__5DCAEF64" Association="Self.FK__PostLikes__userI__5DCAEF64">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="PostLikes" EntitySet="PostLikes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PostPhoto__postI__2B3F6F97" Association="Self.FK__PostPhoto__postI__2B3F6F97">
+      <End Role="Posts" EntitySet="Posts" />
+      <End Role="PostPhotos" EntitySet="PostPhotos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Posts__userID__5CD6CB2B" Association="Self.FK__Posts__userID__5CD6CB2B">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Posts" EntitySet="Posts" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
