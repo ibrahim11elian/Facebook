@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -29,6 +30,11 @@ namespace Facebook.Controllers
             
         }
 
+        public ActionResult Index()
+        {
+            return View(db.Users);
+        }
+
         // GET: User/Details/5
         public ActionResult Details(int? id)
         {
@@ -53,10 +59,18 @@ namespace Facebook.Controllers
         // POST: User/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(User user)
+        public ActionResult Create(User user,HttpPostedFileBase imgFile)
         {
             if (ModelState.IsValid)
             {
+                string path = "";
+                if(imgFile.FileName.Length > 0)
+                {
+                    path = "~/Images/" + Path.GetFileName(imgFile.FileName);
+                    imgFile.SaveAs(Server.MapPath(path));
+                }
+
+                user.Photo = path;
                 db.Users.Add(user);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -64,6 +78,7 @@ namespace Facebook.Controllers
 
             return View(user);
         }
+
 
         // GET: User/Edit/5
         public ActionResult Edit(int? id)
