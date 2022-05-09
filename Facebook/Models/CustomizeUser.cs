@@ -58,7 +58,7 @@ namespace Facebook.Models
 
         [Required]
         [StringLength(15, MinimumLength = 8, ErrorMessage = "Password Should be between 8-15 chracters")]
-        [RegularExpression(@"((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\w]).{8,64})", ErrorMessage = "Password Should contain number, capital, litter and special character")]
+        [RegularExpression(@"((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\w]).{8,64})", ErrorMessage = "Password Should contain number, capital,small litter and special character")]
         public string Password { get; set; }
     }
 }

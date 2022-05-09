@@ -16,12 +16,15 @@ namespace Facebook.Controllers
         private FacebookDatabaseEntities db = new FacebookDatabaseEntities();
 
         // GET: User
-        public ActionResult Home()
+        public ActionResult Home(int id)
         {
             //if (Session["user"] != null){
 
-                //var users = db.Users.Include(u => u.CommentLike).Include(u => u.PostLike);
-                return View();
+            //var users = db.Users.Include(u => u.CommentLike).Include(u => u.PostLike);
+            var user = db.Users.Where(use => use.Id == id).FirstOrDefault();
+            ViewBag.user = user;
+            List<Post> posts = db.Posts.Where(post => post.userID == user.Id).ToList();
+                return View(posts);
             //}
             //else
             //{
