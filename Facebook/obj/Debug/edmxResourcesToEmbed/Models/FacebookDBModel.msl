@@ -39,8 +39,8 @@
     <EntitySetMapping Name="PostPhotos">
       <EntityTypeMapping TypeName="FacebookDatabaseModel.PostPhoto">
         <MappingFragment StoreEntitySet="PostPhotos">
+          <ScalarProperty Name="pphoto" ColumnName="pphoto" />
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="photo" ColumnName="photo" />
           <ScalarProperty Name="postID" ColumnName="postID" />
         </MappingFragment>
       </EntityTypeMapping>

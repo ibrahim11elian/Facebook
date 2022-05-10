@@ -44,9 +44,9 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="photo" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="postID" Type="Int32" />
     <NavigationProperty Name="Post" Relationship="Self.FK__PostPhoto__postI__2B3F6F97" FromRole="PostPhotos" ToRole="Posts" />
+    <Property Name="pphoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Post">
     <Key>

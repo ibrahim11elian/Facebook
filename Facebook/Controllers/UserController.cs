@@ -18,25 +18,38 @@ namespace Facebook.Controllers
         // GET: User
         public ActionResult Home(int id)
         {
-            //if (Session["user"] != null){
+            if (Session["user"] != null)
+            {
 
-            //var users = db.Users.Include(u => u.CommentLike).Include(u => u.PostLike);
-            var user = db.Users.Where(use => use.Id == id).FirstOrDefault();
-            ViewBag.user = user;
-            List<Post> posts = db.Posts.Where(post => post.userID == user.Id).ToList();
+                var users = db.Users.Include(u => u.CommentLike).Include(u => u.PostLike);
+                var user = db.Users.Where(use => use.Id == id).FirstOrDefault();
+                var posts = db.Posts.Where(post => post.userID == user.Id).ToList();
                 return View(posts);
-            //}
-            //else
-            //{
-            //    return RedirectToAction("Login", "Facebook");
-            //}
-            
+            }
+            else
+            {
+                return RedirectToAction("Login", "Facebook");
+            }
+
         }
 
-        public ActionResult Index()
-        {
-            return View(db.Users);
-        }
+        //[ActionName("Index")]
+        //public ActionResult Index(int id)
+        //{
+
+        //    //if (Session["user"] != null){
+
+        //    //var users = db.Users.Include(u => u.CommentLike).Include(u => u.PostLike);
+        //    var user = db.Users.Where(use => use.Id == id).FirstOrDefault();
+        //    ViewBag.user = user;
+        //    var posts = db.Posts.Where(post => post.userID == user.Id).ToList();
+        //    return View(posts);
+        //    //}
+        //    //else
+        //    //{
+        //    //    return RedirectToAction("Login", "Facebook");
+        //    //}
+        //}
 
         // GET: User/Details/5
         public ActionResult Details(int? id)

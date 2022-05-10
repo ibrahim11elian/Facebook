@@ -15,8 +15,8 @@ namespace Facebook.Models
     public partial class PostPhoto
     {
         public int Id { get; set; }
-        public byte[] photo { get; set; }
         public Nullable<int> postID { get; set; }
+        public string pphoto { get; set; }
     
         public virtual Post Post { get; set; }
     }

@@ -41,8 +41,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="photo" Type="image" />
           <Property Name="postID" Type="int" />
+          <Property Name="pphoto" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Posts">
           <Key>
@@ -151,7 +151,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PostPhoto__postI__2B3F6F97">
+        <Association Name="FK__PostPhoto__postI__75A278F5">
           <End Role="Posts" Type="Self.Posts" Multiplicity="0..1" />
           <End Role="PostPhotos" Type="Self.PostPhotos" Multiplicity="*" />
           <ReferentialConstraint>
@@ -211,7 +211,7 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="PostLikes" EntitySet="PostLikes" />
           </AssociationSet>
-          <AssociationSet Name="FK__PostPhoto__postI__2B3F6F97" Association="Self.FK__PostPhoto__postI__2B3F6F97">
+          <AssociationSet Name="FK__PostPhoto__postI__75A278F5" Association="Self.FK__PostPhoto__postI__75A278F5">
             <End Role="Posts" EntitySet="Posts" />
             <End Role="PostPhotos" EntitySet="PostPhotos" />
           </AssociationSet>
@@ -268,9 +268,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="photo" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="postID" Type="Int32" />
           <NavigationProperty Name="Post" Relationship="Self.FK__PostPhoto__postI__2B3F6F97" FromRole="PostPhotos" ToRole="Posts" />
+          <Property Name="pphoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
@@ -501,8 +501,8 @@
           <EntitySetMapping Name="PostPhotos">
             <EntityTypeMapping TypeName="FacebookDatabaseModel.PostPhoto">
               <MappingFragment StoreEntitySet="PostPhotos">
+                <ScalarProperty Name="pphoto" ColumnName="pphoto" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="photo" ColumnName="photo" />
                 <ScalarProperty Name="postID" ColumnName="postID" />
               </MappingFragment>
             </EntityTypeMapping>
