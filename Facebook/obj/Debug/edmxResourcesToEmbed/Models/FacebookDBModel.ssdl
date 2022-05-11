@@ -47,6 +47,7 @@
     <Property Name="content" Type="nvarchar" MaxLength="1000" />
     <Property Name="date" Type="datetime" />
     <Property Name="userID" Type="int" />
+    <Property Name="privacy" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Users">
     <Key>

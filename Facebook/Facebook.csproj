@@ -141,6 +141,7 @@
     <Compile Include="Models\CommentLike.cs">
       <DependentUpon>FacebookDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CustomizePost.cs" />
     <Compile Include="Models\CustomizeUser.cs" />
     <Compile Include="Models\FacebookDBModel.Context.cs">
       <AutoGen>True</AutoGen>

@@ -26,6 +26,7 @@ namespace Facebook.Models
         public string content { get; set; }
         public Nullable<System.DateTime> date { get; set; }
         public Nullable<int> userID { get; set; }
+        public string privacy { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }

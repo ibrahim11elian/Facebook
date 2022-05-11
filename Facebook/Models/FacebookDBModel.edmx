@@ -52,6 +52,7 @@
           <Property Name="content" Type="nvarchar" MaxLength="1000" />
           <Property Name="date" Type="datetime" />
           <Property Name="userID" Type="int" />
+          <Property Name="privacy" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -284,6 +285,7 @@
           <NavigationProperty Name="PostLikes" Relationship="Self.FK__PostLikes__postI__2D27B809" FromRole="Posts" ToRole="PostLikes" />
           <NavigationProperty Name="PostPhotos" Relationship="Self.FK__PostPhoto__postI__2B3F6F97" FromRole="Posts" ToRole="PostPhotos" />
           <NavigationProperty Name="User" Relationship="Self.FK__Posts__userID__5CD6CB2B" FromRole="Posts" ToRole="Users" />
+          <Property Name="privacy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -510,6 +512,7 @@
           <EntitySetMapping Name="Posts">
             <EntityTypeMapping TypeName="FacebookDatabaseModel.Post">
               <MappingFragment StoreEntitySet="Posts">
+                <ScalarProperty Name="privacy" ColumnName="privacy" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="content" ColumnName="content" />
                 <ScalarProperty Name="date" ColumnName="date" />

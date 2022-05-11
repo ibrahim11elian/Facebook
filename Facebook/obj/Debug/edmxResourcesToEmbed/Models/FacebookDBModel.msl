@@ -48,6 +48,7 @@
     <EntitySetMapping Name="Posts">
       <EntityTypeMapping TypeName="FacebookDatabaseModel.Post">
         <MappingFragment StoreEntitySet="Posts">
+          <ScalarProperty Name="privacy" ColumnName="privacy" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="content" ColumnName="content" />
           <ScalarProperty Name="date" ColumnName="date" />

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Facebook.Models;
+using System.IO;
 
 namespace Facebook.Controllers
 {
@@ -15,12 +16,12 @@ namespace Facebook.Controllers
         private FacebookDatabaseEntities db = new FacebookDatabaseEntities();
 
         // GET: Profile
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
             if (Session["user"] != null)
             {
-                var posts = db.Posts.Include(p => p.User);
-                return View(posts.ToList());
+                var posts = db.Posts.Where(post => post.userID == id).OrderByDescending(x => x.date).ToList();
+                return View(posts);
             }
             else
             {
@@ -48,22 +49,48 @@ namespace Facebook.Controllers
         // GET: Profile/Create
         public ActionResult Create()
         {
-            ViewBag.userID = new SelectList(db.Users, "Id", "Fname");
-            return View();
+            if (Session["user"] != null)
+            {
+                //ViewBag.userID = new SelectList(db.Users, "Id", "Fname");
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Facebook");
+            }
+
+            
         }
 
-        // POST: Profile/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,content,date,userID")] Post post)
+        public ActionResult Create([Bind(Include = "content,userID,privacy")] Post post, PostPhoto photo, HttpPostedFileBase imgFile)
         {
+
             if (ModelState.IsValid)
             {
+                string path = "";
+                if (imgFile!= null && imgFile.FileName.Length > 0)
+                {
+                    path = "~/Images/" + Path.GetFileName(imgFile.FileName);
+                    imgFile.SaveAs(Server.MapPath(path));
+                }else if(post.content == null)
+                {
+                    ModelState.AddModelError("content","There is no Photo or Text Content!!");
+                    return View(post);
+                }
+
+
+                photo.pphoto = path;
+                photo.postID = post.Id;
+                db.PostPhotos.Add(photo);
+
+
+                post.userID =int.Parse(Session["id"].ToString());
+                post.date = DateTime.Now;
                 db.Posts.Add(post);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new {id = post.userID });
             }
 
             ViewBag.userID = new SelectList(db.Users, "Id", "Fname", post.userID);
@@ -73,22 +100,28 @@ namespace Facebook.Controllers
         // GET: Profile/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Session["user"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Post post = db.Posts.Find(id);
+                if (post == null)
+                {
+                    return HttpNotFound();
+                }
+
+                //ViewBag.userID = new SelectList(db.Users, "Id", "Fname", post.userID);
+                return View(post);
             }
-            Post post = db.Posts.Find(id);
-            if (post == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Facebook");
             }
-            ViewBag.userID = new SelectList(db.Users, "Id", "Fname", post.userID);
-            return View(post);
+
         }
 
-        // POST: Profile/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,content,date,userID")] Post post)

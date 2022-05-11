@@ -24,6 +24,7 @@ namespace Facebook.Controllers
             if(data != null)
             {
                 Session["user"] = data.Fname;
+                Session["id"] = data.Id;
                 return RedirectToAction("Home","User",new {id = data.Id });
             }
             else

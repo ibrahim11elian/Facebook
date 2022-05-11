@@ -60,6 +60,7 @@
     <NavigationProperty Name="PostLikes" Relationship="Self.FK__PostLikes__postI__2D27B809" FromRole="Posts" ToRole="PostLikes" />
     <NavigationProperty Name="PostPhotos" Relationship="Self.FK__PostPhoto__postI__2B3F6F97" FromRole="Posts" ToRole="PostPhotos" />
     <NavigationProperty Name="User" Relationship="Self.FK__Posts__userID__5CD6CB2B" FromRole="Posts" ToRole="Users" />
+    <Property Name="privacy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="User">
     <Key>
