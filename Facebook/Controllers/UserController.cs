@@ -79,6 +79,18 @@ namespace Facebook.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                var AllUsers = db.Users.ToList();
+
+                foreach(var i in AllUsers)
+                {
+                    if(user.Email == i.Email)
+                    {
+                        ModelState.AddModelError("Email","This Email is already Taken");
+                        return View(user);
+                    }
+                }
+
                 string path = "";
                 if(imgFile.FileName.Length > 0)
                 {
