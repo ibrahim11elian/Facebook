@@ -8,6 +8,8 @@
     <Property Name="userID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Comment" Relationship="Self.FK__CommentLi__comme__3C69FB99" FromRole="CommentLikes" ToRole="Comments" />
     <NavigationProperty Name="User" Relationship="Self.FK__CommentLi__userI__5FB337D6" FromRole="CommentLikes" ToRole="Users" />
+    <Property Name="postID" Type="Int32" />
+    <NavigationProperty Name="Post" Relationship="FacebookDatabaseModel.FK__CommentLi__postI__14270015" FromRole="CommentLike" ToRole="Post" />
   </EntityType>
   <EntityType Name="Comment">
     <Key>
@@ -31,15 +33,6 @@
     <Property Name="FriendID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="User1" Relationship="FacebookDatabaseModel.FK__Friends__FriendI__05D8E0BE" FromRole="Friend" ToRole="User" />
   </EntityType>
-  <EntityType Name="PostLike">
-    <Key>
-      <PropertyRef Name="userID" />
-    </Key>
-    <Property Name="postID" Type="Int32" />
-    <Property Name="userID" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Post" Relationship="Self.FK__PostLikes__postI__2D27B809" FromRole="PostLikes" ToRole="Posts" />
-    <NavigationProperty Name="User" Relationship="Self.FK__PostLikes__userI__5DCAEF64" FromRole="PostLikes" ToRole="Users" />
-  </EntityType>
   <EntityType Name="PostPhoto">
     <Key>
       <PropertyRef Name="Id" />
@@ -58,10 +51,11 @@
     <Property Name="date" Type="DateTime" Precision="3" />
     <Property Name="userID" Type="Int32" />
     <NavigationProperty Name="Comments" Relationship="Self.FK__Comments__postID__37A5467C" FromRole="Posts" ToRole="Comments" />
-    <NavigationProperty Name="PostLikes" Relationship="Self.FK__PostLikes__postI__2D27B809" FromRole="Posts" ToRole="PostLikes" />
     <NavigationProperty Name="PostPhotos" Relationship="Self.FK__PostPhoto__postI__2B3F6F97" FromRole="Posts" ToRole="PostPhotos" />
     <NavigationProperty Name="User" Relationship="Self.FK__Posts__userID__5CD6CB2B" FromRole="Posts" ToRole="Users" />
     <Property Name="privacy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="CommentLikes" Relationship="FacebookDatabaseModel.FK__CommentLi__postI__14270015" FromRole="Post" ToRole="CommentLike" />
+    <NavigationProperty Name="PostLikes" Relationship="FacebookDatabaseModel.FK__PostLikes__postI__40058253" FromRole="Post" ToRole="PostLike" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -79,11 +73,11 @@
     <NavigationProperty Name="CommentLike" Relationship="Self.FK__CommentLi__userI__5FB337D6" FromRole="Users" ToRole="CommentLikes" />
     <NavigationProperty Name="Comments" Relationship="Self.FK__Comments__userID__5EBF139D" FromRole="Users" ToRole="Comments" />
     <NavigationProperty Name="Friends" Relationship="Self.FK__Friends__userID__60A75C0F" FromRole="Users" ToRole="Friends" />
-    <NavigationProperty Name="PostLike" Relationship="Self.FK__PostLikes__userI__5DCAEF64" FromRole="Users" ToRole="PostLikes" />
     <NavigationProperty Name="Posts" Relationship="Self.FK__Posts__userID__5CD6CB2B" FromRole="Users" ToRole="Posts" />
     <NavigationProperty Name="Friend" Relationship="FacebookDatabaseModel.FK__Friends__FriendI__05D8E0BE" FromRole="User" ToRole="Friend" />
     <NavigationProperty Name="FriendRequest" Relationship="FacebookDatabaseModel.FK__FriendReq__Reque__06CD04F7" FromRole="User" ToRole="FriendRequest" />
     <NavigationProperty Name="FriendRequests" Relationship="FacebookDatabaseModel.FK__FriendReq__UserI__07C12930" FromRole="User" ToRole="FriendRequest" />
+    <NavigationProperty Name="PostLikes" Relationship="FacebookDatabaseModel.FK__PostLikes__userI__40F9A68C" FromRole="User" ToRole="PostLike" />
   </EntityType>
   <Association Name="FK__CommentLi__comme__3C69FB99">
     <End Role="Comments" Type="Self.Comment" Multiplicity="0..1" />
@@ -145,30 +139,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__PostLikes__postI__2D27B809">
-    <End Role="Posts" Type="Self.Post" Multiplicity="0..1" />
-    <End Role="PostLikes" Type="Self.PostLike" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Posts">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="PostLikes">
-        <PropertyRef Name="postID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__PostLikes__userI__5DCAEF64">
-    <End Role="Users" Type="Self.User" Multiplicity="1" />
-    <End Role="PostLikes" Type="Self.PostLike" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Users">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="PostLikes">
-        <PropertyRef Name="userID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK__PostPhoto__postI__2B3F6F97">
     <End Role="Posts" Type="Self.Post" Multiplicity="0..1" />
     <End Role="PostPhotos" Type="Self.PostPhoto" Multiplicity="*" />
@@ -197,7 +167,6 @@
     <EntitySet Name="CommentLikes" EntityType="Self.CommentLike" />
     <EntitySet Name="Comments" EntityType="Self.Comment" />
     <EntitySet Name="Friends" EntityType="Self.Friend" />
-    <EntitySet Name="PostLikes" EntityType="Self.PostLike" />
     <EntitySet Name="PostPhotos" EntityType="Self.PostPhoto" />
     <EntitySet Name="Posts" EntityType="Self.Post" />
     <EntitySet Name="Users" EntityType="Self.User" />
@@ -221,14 +190,6 @@
       <End Role="Users" EntitySet="Users" />
       <End Role="Friends" EntitySet="Friends" />
     </AssociationSet>
-    <AssociationSet Name="FK__PostLikes__postI__2D27B809" Association="Self.FK__PostLikes__postI__2D27B809">
-      <End Role="Posts" EntitySet="Posts" />
-      <End Role="PostLikes" EntitySet="PostLikes" />
-    </AssociationSet>
-    <AssociationSet Name="FK__PostLikes__userI__5DCAEF64" Association="Self.FK__PostLikes__userI__5DCAEF64">
-      <End Role="Users" EntitySet="Users" />
-      <End Role="PostLikes" EntitySet="PostLikes" />
-    </AssociationSet>
     <AssociationSet Name="FK__PostPhoto__postI__2B3F6F97" Association="Self.FK__PostPhoto__postI__2B3F6F97">
       <End Role="Posts" EntitySet="Posts" />
       <End Role="PostPhotos" EntitySet="PostPhotos" />
@@ -249,6 +210,19 @@
     <AssociationSet Name="FK__FriendReq__UserI__07C12930" Association="FacebookDatabaseModel.FK__FriendReq__UserI__07C12930">
       <End Role="User" EntitySet="Users" />
       <End Role="FriendRequest" EntitySet="FriendRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CommentLi__postI__14270015" Association="FacebookDatabaseModel.FK__CommentLi__postI__14270015">
+      <End Role="Post" EntitySet="Posts" />
+      <End Role="CommentLike" EntitySet="CommentLikes" />
+    </AssociationSet>
+    <EntitySet Name="PostLikes" EntityType="FacebookDatabaseModel.PostLike" />
+    <AssociationSet Name="FK__PostLikes__postI__40058253" Association="FacebookDatabaseModel.FK__PostLikes__postI__40058253">
+      <End Role="Post" EntitySet="Posts" />
+      <End Role="PostLike" EntitySet="PostLikes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PostLikes__userI__40F9A68C" Association="FacebookDatabaseModel.FK__PostLikes__userI__40F9A68C">
+      <End Role="User" EntitySet="Users" />
+      <End Role="PostLike" EntitySet="PostLikes" />
     </AssociationSet>
   </EntityContainer>
   <Association Name="FK__Friends__FriendI__05D8E0BE">
@@ -293,6 +267,52 @@
       </Principal>
       <Dependent Role="FriendRequest">
         <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CommentLi__postI__14270015">
+    <End Type="FacebookDatabaseModel.Post" Role="Post" Multiplicity="0..1" />
+    <End Type="FacebookDatabaseModel.CommentLike" Role="CommentLike" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CommentLike">
+        <PropertyRef Name="postID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="PostLike">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="postID" Type="Int32" />
+    <Property Name="userID" Type="Int32" />
+    <NavigationProperty Name="Post" Relationship="FacebookDatabaseModel.FK__PostLikes__postI__40058253" FromRole="PostLike" ToRole="Post" />
+    <NavigationProperty Name="User" Relationship="FacebookDatabaseModel.FK__PostLikes__userI__40F9A68C" FromRole="PostLike" ToRole="User" />
+  </EntityType>
+  <Association Name="FK__PostLikes__postI__40058253">
+    <End Type="FacebookDatabaseModel.Post" Role="Post" Multiplicity="0..1" />
+    <End Type="FacebookDatabaseModel.PostLike" Role="PostLike" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PostLike">
+        <PropertyRef Name="postID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PostLikes__userI__40F9A68C">
+    <End Type="FacebookDatabaseModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="FacebookDatabaseModel.PostLike" Role="PostLike" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PostLike">
+        <PropertyRef Name="userID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

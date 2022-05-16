@@ -10,7 +10,7 @@
 
 @foreach (var item in Model)
 {
-    <div class="container mt-5 mb-5 ">
+    <div class="container mt-5 mb-5 " id="post_@item.Id">
         <div class="row d-flex align-items-center justify-content-center">
             <div class="col-md-6">
                 <div class="card">
@@ -29,7 +29,7 @@
                         <p class="text-justify">@Html.DisplayFor(postContent => item.content)</p>
                         <hr>
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex flex-row icons d-flex align-items-center"> <i class="fa fa-heart mr"></i> <i class="fa fa-smile-o ml-2"></i> </div>
+                            <div class="d-flex flex-row icons d-flex align-items-center"><button class="btn btn-outline-primary" style="margin-right:5px" onclick="Like(@item.Id)">Like</button> <button class="btn btn-outline-danger" style="margin-right:5px">Dislike</button> <span class="muted-color"><span id="like_@item.Id">@item.PostLikes.Count</span> Like(s)</span> </div>
                             <div class="d-flex flex-row muted-color"> <span>@item.Comments.Count comment(s)</span></div>
                         </div>
                         <hr>
@@ -40,15 +40,16 @@
                                     <img src="@Url.Content(comment.User.Photo)" width="40" class="rounded-image mr">
                                     <div class="d-flex flex-column ml-2">
                                         <span class="name">@comment.User.Fname @comment.User.Lname</span> <small class="comment-txt">@comment.content</small>
-                                        <div class="d-flex flex-row align-items-center status"> <small>Like</small> <small>Reply</small><small>@comment.Cdate</small> </div>
+                                        <div class="d-flex flex-row align-items-center status"> <button class="btn" style="margin-right:5px" onclick="Likecomment(@item.Id,@comment.Id)">Like</button> <span class="muted-color"><span id="likeco_@item.Id">@item.CommentLikes.Count</span> Like(s)</span><small>@comment.Cdate</small> </div>
                                     </div>
                                 </div>
                             }
 
-                            <form id="newComment">
+                            <form id="id_@item.Id"method="post" action=@Url.Action("AddComment","Profile")>
                                 <div class="comment-input">
-                                    <input type="text" class="form-control">
-                                    <div class="fonts"> <i class="fa fa-camera"></i> </div>
+                                    <input type="text" name="commentc" class="form-control">
+                                    <input type="number" id="txtAge" name="postid" value=@item.Id style="display:none" />
+                                    <div id="addc" class="fonts"><button type="submit" class="btn">Add Comment</button></div>
                                 </div>
                             </form>
 
@@ -68,49 +69,68 @@
     
     <script>
 
-        $(document).ready(function () {
+        function Like(id) {
+            $.ajax({
 
-            $("#newComment").click(function () {
-                ncomment = $("#newComment").serialize();
-                $.ajax({
-
-                    type: "POST",
-                    url: "/",
-                    data: ncomment,
-                    success: function () {
-                        newcomment = document.createElement('div');
-                        newcomment
-                        $("#comments").append
+                type: "GET",
+                url: "/Profile/Like/" + id,
+                success: function (response) {
+                    if (response.cod == 200) {
+                        var x = $("#like_" + id).text();
+                        x = parseInt(x);
+                        x = x + 1;
+                        $("#like_" + id).text(x.toString());
                     }
-                })
+                    else {
+                        alert("we have a problem!")
+                    }
+                    
+                },
 
-            })
+            });
+        }
+        function Likecomment(postid,comid) {
+            $.ajax({
 
-        })
+                type: "GET",
+                url: "/Profile/LikeComment?id=" + postid +"&comid="+ comid,
+                success: function (response) {
+                    if (response.cod == 200) {
+                        var x = $("#likeco_" + comid).text();
+                        x = parseInt(x);
+                        x = x + 1;
+                        $("#likeco_" + id).text(x.toString());
+                    }
+                    else {
+                        alert("we have a problem!")
+                    }
 
+                },
 
+            });
+        }
+
+        
+        //$(document).ready(function () {
+
+        //    $("#addc").click(function () {
+
+        //        ncomment = $("#id_").serialize();
+        //        $.ajax({
+
+        //            type: "POST",
+        //            url: "/Profile/AddComment",
+        //            data: ncomment,
+        //            success: function (response) {
+        //                alert("comment added ");
+        //            },
+
+        //        })
+
+        //    });
+
+        //});
     </script>
 
 }
-
-
-
-@*@foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Fname)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }*@
 

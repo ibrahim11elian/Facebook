@@ -8,7 +8,6 @@
         <EntityTypeShape EntityType="FacebookDatabaseModel.CommentLike" Width="1.5" PointX="3" PointY="7.25" IsExpanded="true" />
         <EntityTypeShape EntityType="FacebookDatabaseModel.Comment" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
         <EntityTypeShape EntityType="FacebookDatabaseModel.Friend" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="FacebookDatabaseModel.PostLike" Width="1.5" PointX="5.25" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FacebookDatabaseModel.PostPhoto" Width="1.5" PointX="5.25" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FacebookDatabaseModel.Post" Width="1.5" PointX="3" PointY="16.375" IsExpanded="true" />
         <EntityTypeShape EntityType="FacebookDatabaseModel.User" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
@@ -17,15 +16,17 @@
         <AssociationConnector Association="FacebookDatabaseModel.FK__Comments__postID__37A5467C" ManuallyRouted="false" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__Comments__userID__5EBF139D" ManuallyRouted="false" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__Friends__userID__60A75C0F" ManuallyRouted="false" />
-        <AssociationConnector Association="FacebookDatabaseModel.FK__PostLikes__postI__2D27B809" ManuallyRouted="false" />
-        <AssociationConnector Association="FacebookDatabaseModel.FK__PostLikes__userI__5DCAEF64" ManuallyRouted="false" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__PostPhoto__postI__2B3F6F97" ManuallyRouted="false" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__Posts__userID__5CD6CB2B" ManuallyRouted="false" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__Friends__FriendI__05D8E0BE" />
         <EntityTypeShape EntityType="FacebookDatabaseModel.FriendRequest" Width="1.5" PointX="3" PointY="4.5" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__FriendReq__Reque__06CD04F7" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__FriendReq__UserI__07C12930" />
-      </Diagram>
+        <AssociationConnector Association="FacebookDatabaseModel.FK__CommentLi__postI__14270015" />
+        <EntityTypeShape EntityType="FacebookDatabaseModel.PostLike" Width="1.5" PointX="8.25" PointY="14.875" />
+        <AssociationConnector Association="FacebookDatabaseModel.FK__PostLikes__postI__40058253" />
+        <AssociationConnector Association="FacebookDatabaseModel.FK__PostLikes__userI__40F9A68C" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

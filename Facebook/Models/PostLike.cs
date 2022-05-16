@@ -14,8 +14,9 @@ namespace Facebook.Models
     
     public partial class PostLike
     {
+        public int Id { get; set; }
         public Nullable<int> postID { get; set; }
-        public int userID { get; set; }
+        public Nullable<int> userID { get; set; }
     
         public virtual Post Post { get; set; }
         public virtual User User { get; set; }

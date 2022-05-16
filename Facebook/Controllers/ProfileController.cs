@@ -184,11 +184,44 @@ namespace Facebook.Controllers
             db.SaveChanges();
             return RedirectToAction("Index", new { id = Session["id"] });
         }
+        [HttpPost]
+        public ActionResult AddComment()
+        {
+            if (ModelState.IsValid)
+            {
+                Comment newcomment = new Comment();
+                newcomment.Cdate = DateTime.Now;
+                newcomment.content = HttpContext.Request.Form["commentc"];
+                newcomment.postID = int.Parse(HttpContext.Request.Form["postid"]);
+                newcomment.userID = int.Parse(Session["id"].ToString());
+                db.Comments.Add(newcomment);
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = newcomment.userID });
+            }
 
-        //public ActionResult AddComment(Comment newcomment)
-        //{
-        //    return JsonResult{ };
-        //}
+            return Json(new { cod = 200 },JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Like(int id)
+        {
+            PostLike like = new PostLike();
+            like.postID = id;
+            like.userID = int.Parse(Session["id"].ToString());
+            db.PostLikes.Add(like);
+            db.SaveChanges();
+            return Json(new { cod = 200 }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult LikeComment(int id,int comid)
+        {
+            CommentLike like = new CommentLike();
+            like.postID = id;
+            like.commentID = comid;
+            like.userID = int.Parse(Session["id"].ToString());
+            db.CommentLikes.Add(like);
+            db.SaveChanges();
+            return Json(new { cod = 200 }, JsonRequestBehavior.AllowGet);
+        }
 
         protected override void Dispose(bool disposing)
         {

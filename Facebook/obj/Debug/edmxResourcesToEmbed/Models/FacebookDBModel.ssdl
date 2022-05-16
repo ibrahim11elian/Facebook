@@ -6,6 +6,7 @@
     </Key>
     <Property Name="commentID" Type="int" />
     <Property Name="userID" Type="int" Nullable="false" />
+    <Property Name="postID" Type="int" />
   </EntityType>
   <EntityType Name="Comments">
     <Key>
@@ -33,10 +34,11 @@
   </EntityType>
   <EntityType Name="PostLikes">
     <Key>
-      <PropertyRef Name="userID" />
+      <PropertyRef Name="Id" />
     </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="postID" Type="int" />
-    <Property Name="userID" Type="int" Nullable="false" />
+    <Property Name="userID" Type="int" />
   </EntityType>
   <EntityType Name="PostPhotos">
     <Key>
@@ -79,6 +81,18 @@
       </Principal>
       <Dependent Role="CommentLikes">
         <PropertyRef Name="commentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CommentLi__postI__14270015">
+    <End Role="Posts" Type="Self.Posts" Multiplicity="0..1" />
+    <End Role="CommentLikes" Type="Self.CommentLikes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Posts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CommentLikes">
+        <PropertyRef Name="postID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -166,7 +180,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__PostLikes__postI__2D27B809">
+  <Association Name="FK__PostLikes__postI__40058253">
     <End Role="Posts" Type="Self.Posts" Multiplicity="0..1" />
     <End Role="PostLikes" Type="Self.PostLikes" Multiplicity="*" />
     <ReferentialConstraint>
@@ -178,9 +192,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__PostLikes__userI__5DCAEF64">
-    <End Role="Users" Type="Self.Users" Multiplicity="1" />
-    <End Role="PostLikes" Type="Self.PostLikes" Multiplicity="0..1" />
+  <Association Name="FK__PostLikes__userI__40F9A68C">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="PostLikes" Type="Self.PostLikes" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Users">
         <PropertyRef Name="Id" />
@@ -227,6 +241,10 @@
       <End Role="Comments" EntitySet="Comments" />
       <End Role="CommentLikes" EntitySet="CommentLikes" />
     </AssociationSet>
+    <AssociationSet Name="FK__CommentLi__postI__14270015" Association="Self.FK__CommentLi__postI__14270015">
+      <End Role="Posts" EntitySet="Posts" />
+      <End Role="CommentLikes" EntitySet="CommentLikes" />
+    </AssociationSet>
     <AssociationSet Name="FK__CommentLi__userI__5FB337D6" Association="Self.FK__CommentLi__userI__5FB337D6">
       <End Role="Users" EntitySet="Users" />
       <End Role="CommentLikes" EntitySet="CommentLikes" />
@@ -255,11 +273,11 @@
       <End Role="Users" EntitySet="Users" />
       <End Role="Friends" EntitySet="Friends" />
     </AssociationSet>
-    <AssociationSet Name="FK__PostLikes__postI__2D27B809" Association="Self.FK__PostLikes__postI__2D27B809">
+    <AssociationSet Name="FK__PostLikes__postI__40058253" Association="Self.FK__PostLikes__postI__40058253">
       <End Role="Posts" EntitySet="Posts" />
       <End Role="PostLikes" EntitySet="PostLikes" />
     </AssociationSet>
-    <AssociationSet Name="FK__PostLikes__userI__5DCAEF64" Association="Self.FK__PostLikes__userI__5DCAEF64">
+    <AssociationSet Name="FK__PostLikes__userI__40F9A68C" Association="Self.FK__PostLikes__userI__40F9A68C">
       <End Role="Users" EntitySet="Users" />
       <End Role="PostLikes" EntitySet="PostLikes" />
     </AssociationSet>

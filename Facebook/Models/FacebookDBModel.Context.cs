@@ -28,10 +28,10 @@ namespace Facebook.Models
         public virtual DbSet<CommentLike> CommentLikes { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Friend> Friends { get; set; }
-        public virtual DbSet<PostLike> PostLikes { get; set; }
         public virtual DbSet<PostPhoto> PostPhotos { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<FriendRequest> FriendRequests { get; set; }
+        public virtual DbSet<PostLike> PostLikes { get; set; }
     }
 }

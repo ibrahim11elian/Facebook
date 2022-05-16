@@ -21,7 +21,6 @@ namespace Facebook.Controllers
             if (Session["user"] != null)
             {
 
-                var users = db.Users.Include(u => u.CommentLike).Include(u => u.PostLike);
                 var user = db.Users.Where(use => use.Id == id).FirstOrDefault();
                 var posts = db.Posts.Where(post => post.userID == user.Id).ToList();
                 return View(posts);

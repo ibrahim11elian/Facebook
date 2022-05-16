@@ -21,6 +21,7 @@ namespace Facebook.Models
             this.Friends = new HashSet<Friend>();
             this.Posts = new HashSet<Post>();
             this.FriendRequests = new HashSet<FriendRequest>();
+            this.PostLikes = new HashSet<PostLike>();
         }
     
         public int Id { get; set; }
@@ -38,12 +39,13 @@ namespace Facebook.Models
         public virtual ICollection<Comment> Comments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Friend> Friends { get; set; }
-        public virtual PostLike PostLike { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Post> Posts { get; set; }
         public virtual Friend Friend { get; set; }
         public virtual FriendRequest FriendRequest { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FriendRequest> FriendRequests { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PostLike> PostLikes { get; set; }
     }
 }
