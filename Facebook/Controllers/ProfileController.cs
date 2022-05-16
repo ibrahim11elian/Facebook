@@ -31,21 +31,6 @@ namespace Facebook.Controllers
             
         }
 
-        // GET: Profile/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Post post = db.Posts.Find(id);
-            if (post == null)
-            {
-                return HttpNotFound();
-            }
-            return View(post);
-        }
-
         // GET: Profile/Create
         public ActionResult Create()
         {
@@ -74,16 +59,15 @@ namespace Facebook.Controllers
                 {
                     path = "~/Images/" + Path.GetFileName(imgFile.FileName);
                     imgFile.SaveAs(Server.MapPath(path));
-                }else if(post.content == null)
+                    photo.pphoto = path;
+                    photo.postID = post.Id;
+                    db.PostPhotos.Add(photo);
+                }
+                else if(post.content == null)
                 {
                     ModelState.AddModelError("content","There is no Photo or Text Content!!");
                     return View(post);
                 }
-
-
-                photo.pphoto = path;
-                photo.postID = post.Id;
-                db.PostPhotos.Add(photo);
 
 
                 post.userID =int.Parse(Session["id"].ToString());
@@ -124,31 +108,60 @@ namespace Facebook.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,content,date,userID")] Post post)
+        public ActionResult Edit(Post post, PostPhoto photo, HttpPostedFileBase imgFile)
         {
-            if (ModelState.IsValid)
+            var before = db.Posts.AsNoTracking().Where(id => id.Id == post.Id).ToList().FirstOrDefault();
+            var photoForPost = db.PostPhotos.Where(p => p.postID == post.Id).ToList();
+
+            string path = "";
+
+            if (post.content == null && photoForPost == null)
             {
+
+                ModelState.AddModelError("content", "There is no Photo or Text Content!!");
+                return View(post);
+            }
+            else
+            {
+                if (imgFile != null && imgFile.FileName.Length > 0)
+                {
+                    path = "~/Images/" + Path.GetFileName(imgFile.FileName);
+                    imgFile.SaveAs(Server.MapPath(path));
+                    photo.pphoto = path;
+                    photo.postID = post.Id;
+                    db.PostPhotos.Add(photo);
+                }
+                post.date = before.date;
+                post.userID = before.userID;
                 db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = post.userID});
             }
-            ViewBag.userID = new SelectList(db.Users, "Id", "Fname", post.userID);
-            return View(post);
+                
         }
 
         // GET: Profile/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+
+            if (Session["user"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Post post = db.Posts.Find(id);
+                if (post == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(post);
             }
-            Post post = db.Posts.Find(id);
-            if (post == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", new { id = Session["id"] });
             }
-            return View(post);
+   
         }
 
         // POST: Profile/Delete/5
@@ -157,9 +170,18 @@ namespace Facebook.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Post post = db.Posts.Find(id);
+            var deletephoto =
+            from photos in db.PostPhotos
+            where photos.postID == post.Id
+            select photos;
+            
+            foreach(var photo in deletephoto)
+            {
+                db.PostPhotos.Remove(photo);
+            }
             db.Posts.Remove(post);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = Session["id"] });
         }
 
         protected override void Dispose(bool disposing)

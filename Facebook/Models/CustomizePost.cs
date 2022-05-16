@@ -19,7 +19,6 @@ namespace Facebook.Models
 
         [DataType(DataType.DateTime)]
         public Nullable<System.DateTime> date { get; set; }
-        public Nullable<int> userID { get; set; }
 
         [Display(Name ="Privacy")]
         [Required]

@@ -142,6 +142,7 @@
       <DependentUpon>FacebookDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CustomizePost.cs" />
+    <Compile Include="Models\CustomizePostPhoto.cs" />
     <Compile Include="Models\CustomizeUser.cs" />
     <Compile Include="Models\FacebookDBModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -285,7 +286,6 @@
     <Content Include="Views\User\Home.cshtml" />
     <Content Include="Views\Profile\Create.cshtml" />
     <Content Include="Views\Profile\Delete.cshtml" />
-    <Content Include="Views\Profile\Details.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
   </ItemGroup>

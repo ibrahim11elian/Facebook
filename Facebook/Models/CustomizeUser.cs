@@ -54,6 +54,8 @@ namespace Facebook.Models
         [Required]
         public string Gender { get; set; }
 
+        [FileExtensions(Extensions = "jpg,jpeg,png")]
+        [DataType(DataType.ImageUrl)]
         public string Photo { get; set; }
 
         [Required]
