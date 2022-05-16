@@ -14,6 +14,7 @@ namespace Facebook.Controllers
         public ActionResult Login()
         {
             Session["user"] = null;
+            Session["id"] = null;
             return View();
         }
 
@@ -32,6 +33,11 @@ namespace Facebook.Controllers
                 ViewBag.error = "Invalid user Try Again";
                 return View(user);
             }
+        }
+
+        public ActionResult LogOut()
+        {
+            return RedirectToAction("Login");
         }
 
 
