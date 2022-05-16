@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Content/home.css" rel="stylesheet" crossorigin="anonymous">
-
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -34,7 +33,7 @@
                             <div class="d-flex flex-row muted-color"> <span>@item.Comments.Count comment(s)</span></div>
                         </div>
                         <hr>
-                        <div class="comments">
+                        <div class="comments" id="comments">
                             @foreach (var comment in item.Comments)
                             {
                                 <div class="d-flex flex-row mb-2 mr">
@@ -46,11 +45,13 @@
                                 </div>
                             }
 
+                            <form id="newComment">
+                                <div class="comment-input">
+                                    <input type="text" class="form-control">
+                                    <div class="fonts"> <i class="fa fa-camera"></i> </div>
+                                </div>
+                            </form>
 
-                            <div class="comment-input">
-                                <input type="text" class="form-control">
-                                <div class="fonts"> <i class="fa fa-camera"></i> </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -59,22 +60,57 @@
     </div>
 }
 
-@foreach (var item in Model)
+@section Scripts
 {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.content)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.Fname)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-        </td>
-    </tr>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    
+    <script>
+
+        $(document).ready(function () {
+
+            $("#newComment").click(function () {
+                ncomment = $("#newComment").serialize();
+                $.ajax({
+
+                    type: "POST",
+                    url: "/",
+                    data: ncomment,
+                    success: function () {
+                        newcomment = document.createElement('div');
+                        newcomment
+                        $("#comments").append
+                    }
+                })
+
+            })
+
+        })
+
+
+    </script>
+
 }
+
+
+
+@*@foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Fname)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }*@
 

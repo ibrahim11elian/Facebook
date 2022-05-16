@@ -101,7 +101,9 @@ namespace Facebook.Controllers
                 user.Photo = path;
                 db.Users.Add(user);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                Session["user"] = user.Fname;
+                Session["id"] = user.Id;
+                return RedirectToAction("Home",new { id = user.Id});
             }
 
             return View(user);

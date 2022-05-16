@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Facebook.Models;
 using System.IO;
+using Microsoft.Ajax.Utilities;
 
 namespace Facebook.Controllers
 {
@@ -183,6 +184,11 @@ namespace Facebook.Controllers
             db.SaveChanges();
             return RedirectToAction("Index", new { id = Session["id"] });
         }
+
+        //public ActionResult AddComment(Comment newcomment)
+        //{
+        //    return JsonResult{ };
+        //}
 
         protected override void Dispose(bool disposing)
         {
