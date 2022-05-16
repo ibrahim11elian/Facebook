@@ -22,11 +22,18 @@
           <Property Name="postID" Type="int" />
           <Property Name="userID" Type="int" />
         </EntityType>
+        <EntityType Name="FriendRequests">
+          <Key>
+            <PropertyRef Name="RequestID" />
+          </Key>
+          <Property Name="RequestID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+        </EntityType>
         <EntityType Name="Friends">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="FriendID" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FriendID" Type="int" Nullable="false" />
           <Property Name="userID" Type="int" />
         </EntityType>
         <EntityType Name="PostLikes">
@@ -116,7 +123,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Friends__userID__60A75C0F">
+        <Association Name="FK__FriendReq__Reque__06CD04F7">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="FriendRequests" Type="Self.FriendRequests" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FriendRequests">
+              <PropertyRef Name="RequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FriendReq__UserI__07C12930">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="FriendRequests" Type="Self.FriendRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FriendRequests">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Friends__FriendI__05D8E0BE">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Friends" Type="Self.Friends" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Friends">
+              <PropertyRef Name="FriendID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Friends__userID__04E4BC85">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
           <ReferentialConstraint>
@@ -179,6 +222,7 @@
         <EntityContainer Name="FacebookDatabaseModelStoreContainer">
           <EntitySet Name="CommentLikes" EntityType="Self.CommentLikes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FriendRequests" EntityType="Self.FriendRequests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Friends" EntityType="Self.Friends" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PostLikes" EntityType="Self.PostLikes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PostPhotos" EntityType="Self.PostPhotos" Schema="dbo" store:Type="Tables" />
@@ -200,7 +244,19 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Comments" EntitySet="Comments" />
           </AssociationSet>
-          <AssociationSet Name="FK__Friends__userID__60A75C0F" Association="Self.FK__Friends__userID__60A75C0F">
+          <AssociationSet Name="FK__FriendReq__Reque__06CD04F7" Association="Self.FK__FriendReq__Reque__06CD04F7">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FriendRequests" EntitySet="FriendRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FriendReq__UserI__07C12930" Association="Self.FK__FriendReq__UserI__07C12930">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FriendRequests" EntitySet="FriendRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Friends__FriendI__05D8E0BE" Association="Self.FK__Friends__FriendI__05D8E0BE">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Friends" EntitySet="Friends" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Friends__userID__04E4BC85" Association="Self.FK__Friends__userID__04E4BC85">
             <End Role="Users" EntitySet="Users" />
             <End Role="Friends" EntitySet="Friends" />
           </AssociationSet>
@@ -249,11 +305,12 @@
         </EntityType>
         <EntityType Name="Friend">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="FriendID" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="userID" Type="Int32" />
           <NavigationProperty Name="User" Relationship="Self.FK__Friends__userID__60A75C0F" FromRole="Friends" ToRole="Users" />
+          <Property Name="FriendID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User1" Relationship="FacebookDatabaseModel.FK__Friends__FriendI__05D8E0BE" FromRole="Friend" ToRole="User" />
         </EntityType>
         <EntityType Name="PostLike">
           <Key>
@@ -305,6 +362,9 @@
           <NavigationProperty Name="Friends" Relationship="Self.FK__Friends__userID__60A75C0F" FromRole="Users" ToRole="Friends" />
           <NavigationProperty Name="PostLike" Relationship="Self.FK__PostLikes__userI__5DCAEF64" FromRole="Users" ToRole="PostLikes" />
           <NavigationProperty Name="Posts" Relationship="Self.FK__Posts__userID__5CD6CB2B" FromRole="Users" ToRole="Posts" />
+          <NavigationProperty Name="Friend" Relationship="FacebookDatabaseModel.FK__Friends__FriendI__05D8E0BE" FromRole="User" ToRole="Friend" />
+          <NavigationProperty Name="FriendRequest" Relationship="FacebookDatabaseModel.FK__FriendReq__Reque__06CD04F7" FromRole="User" ToRole="FriendRequest" />
+          <NavigationProperty Name="FriendRequests" Relationship="FacebookDatabaseModel.FK__FriendReq__UserI__07C12930" FromRole="User" ToRole="FriendRequest" />
         </EntityType>
         <Association Name="FK__CommentLi__comme__3C69FB99">
           <End Role="Comments" Type="Self.Comment" Multiplicity="0..1" />
@@ -458,7 +518,65 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Posts" EntitySet="Posts" />
           </AssociationSet>
+          <AssociationSet Name="FK__Friends__FriendI__05D8E0BE" Association="FacebookDatabaseModel.FK__Friends__FriendI__05D8E0BE">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Friend" EntitySet="Friends" />
+          </AssociationSet>
+          <EntitySet Name="FriendRequests" EntityType="FacebookDatabaseModel.FriendRequest" />
+          <AssociationSet Name="FK__FriendReq__Reque__06CD04F7" Association="FacebookDatabaseModel.FK__FriendReq__Reque__06CD04F7">
+            <End Role="User" EntitySet="Users" />
+            <End Role="FriendRequest" EntitySet="FriendRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FriendReq__UserI__07C12930" Association="FacebookDatabaseModel.FK__FriendReq__UserI__07C12930">
+            <End Role="User" EntitySet="Users" />
+            <End Role="FriendRequest" EntitySet="FriendRequests" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK__Friends__FriendI__05D8E0BE">
+          <End Type="FacebookDatabaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="FacebookDatabaseModel.Friend" Role="Friend" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Friend">
+              <PropertyRef Name="FriendID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FriendRequest">
+          <Key>
+            <PropertyRef Name="RequestID" />
+          </Key>
+          <Property Name="RequestID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="FacebookDatabaseModel.FK__FriendReq__Reque__06CD04F7" FromRole="FriendRequest" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="FacebookDatabaseModel.FK__FriendReq__UserI__07C12930" FromRole="FriendRequest" ToRole="User" />
+        </EntityType>
+        <Association Name="FK__FriendReq__Reque__06CD04F7">
+          <End Type="FacebookDatabaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="FacebookDatabaseModel.FriendRequest" Role="FriendRequest" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FriendRequest">
+              <PropertyRef Name="RequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FriendReq__UserI__07C12930">
+          <End Type="FacebookDatabaseModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="FacebookDatabaseModel.FriendRequest" Role="FriendRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FriendRequest">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -487,7 +605,7 @@
           <EntitySetMapping Name="Friends">
             <EntityTypeMapping TypeName="FacebookDatabaseModel.Friend">
               <MappingFragment StoreEntitySet="Friends">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FriendID" ColumnName="FriendID" />
                 <ScalarProperty Name="userID" ColumnName="userID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -532,6 +650,14 @@
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="Photo" ColumnName="Photo" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FriendRequests">
+            <EntityTypeMapping TypeName="FacebookDatabaseModel.FriendRequest">
+              <MappingFragment StoreEntitySet="FriendRequests">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RequestID" ColumnName="RequestID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

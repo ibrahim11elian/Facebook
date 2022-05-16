@@ -21,6 +21,10 @@
         <AssociationConnector Association="FacebookDatabaseModel.FK__PostLikes__userI__5DCAEF64" ManuallyRouted="false" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__PostPhoto__postI__2B3F6F97" ManuallyRouted="false" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__Posts__userID__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="FacebookDatabaseModel.FK__Friends__FriendI__05D8E0BE" />
+        <EntityTypeShape EntityType="FacebookDatabaseModel.FriendRequest" Width="1.5" PointX="3" PointY="4.5" />
+        <AssociationConnector Association="FacebookDatabaseModel.FK__FriendReq__Reque__06CD04F7" />
+        <AssociationConnector Association="FacebookDatabaseModel.FK__FriendReq__UserI__07C12930" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

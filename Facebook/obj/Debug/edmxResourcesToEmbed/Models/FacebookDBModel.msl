@@ -23,7 +23,7 @@
     <EntitySetMapping Name="Friends">
       <EntityTypeMapping TypeName="FacebookDatabaseModel.Friend">
         <MappingFragment StoreEntitySet="Friends">
-          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FriendID" ColumnName="FriendID" />
           <ScalarProperty Name="userID" ColumnName="userID" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -68,6 +68,14 @@
           <ScalarProperty Name="Gender" ColumnName="Gender" />
           <ScalarProperty Name="Photo" ColumnName="Photo" />
           <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FriendRequests">
+      <EntityTypeMapping TypeName="FacebookDatabaseModel.FriendRequest">
+        <MappingFragment StoreEntitySet="FriendRequests">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="RequestID" ColumnName="RequestID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

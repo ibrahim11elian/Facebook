@@ -14,9 +14,10 @@ namespace Facebook.Models
     
     public partial class Friend
     {
-        public int Id { get; set; }
         public Nullable<int> userID { get; set; }
+        public int FriendID { get; set; }
     
         public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

@@ -162,6 +162,9 @@
     <Compile Include="Models\Friend.cs">
       <DependentUpon>FacebookDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FriendRequest.cs">
+      <DependentUpon>FacebookDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Post.cs">
       <DependentUpon>FacebookDBModel.tt</DependentUpon>
     </Compile>
