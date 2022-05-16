@@ -39,6 +39,8 @@
                 <input type="submit" value="Log In" class="btn btn-primary" />
             </div>
             @ViewBag.error
+
+            <p class="m-1">If you don't have an account @Html.ActionLink("Create", "Create", "User") a new one</p>
         </div>
     </div>
 }
