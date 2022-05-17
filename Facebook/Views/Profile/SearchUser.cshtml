@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Facebook.Models.User>
+@{
+    ViewBag.Title = "SearchUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Search Result</h2>
+
+<table class="table">
+    <tr>
+        <th> Name </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Photo)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Fname @item.Lname</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+
+            <td>
+                <img src="@Url.Content(item.Photo)" width="50" height="50" />
+            </td>
+            <td>
+                <a href="@Url.Action("SendRequest", new { id = item.Id})" class="btn btn-success"> <span class="g-lg-1"></span>Add Friend</a>
+            </td>
+        </tr>
+    }
+</table>

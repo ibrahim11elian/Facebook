@@ -1,15 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="FacebookDatabaseModelStoreContainer" CdmEntityContainer="FacebookDatabaseEntities">
-    <EntitySetMapping Name="CommentLikes">
-      <EntityTypeMapping TypeName="FacebookDatabaseModel.CommentLike">
-        <MappingFragment StoreEntitySet="CommentLikes">
-          <ScalarProperty Name="postID" ColumnName="postID" />
-          <ScalarProperty Name="commentID" ColumnName="commentID" />
-          <ScalarProperty Name="userID" ColumnName="userID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Comments">
       <EntityTypeMapping TypeName="FacebookDatabaseModel.Comment">
         <MappingFragment StoreEntitySet="Comments">
@@ -77,6 +68,16 @@
         <MappingFragment StoreEntitySet="PostLikes">
           <ScalarProperty Name="userID" ColumnName="userID" />
           <ScalarProperty Name="postID" ColumnName="postID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CommentLikes">
+      <EntityTypeMapping TypeName="FacebookDatabaseModel.CommentLike">
+        <MappingFragment StoreEntitySet="CommentLikes">
+          <ScalarProperty Name="userID" ColumnName="userID" />
+          <ScalarProperty Name="postID" ColumnName="postID" />
+          <ScalarProperty Name="commentID" ColumnName="commentID" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

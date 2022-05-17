@@ -2,11 +2,12 @@
 <Schema Namespace="FacebookDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="CommentLikes">
     <Key>
-      <PropertyRef Name="userID" />
+      <PropertyRef Name="Id" />
     </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="commentID" Type="int" />
-    <Property Name="userID" Type="int" Nullable="false" />
     <Property Name="postID" Type="int" />
+    <Property Name="userID" Type="int" />
   </EntityType>
   <EntityType Name="Comments">
     <Key>
@@ -72,7 +73,7 @@
     <Property Name="Photo" Type="nvarchar(max)" />
     <Property Name="Password" Type="nvarchar" MaxLength="50" />
   </EntityType>
-  <Association Name="FK__CommentLi__comme__3C69FB99">
+  <Association Name="FK__CommentLi__comme__625A9A57">
     <End Role="Comments" Type="Self.Comments" Multiplicity="0..1" />
     <End Role="CommentLikes" Type="Self.CommentLikes" Multiplicity="*" />
     <ReferentialConstraint>
@@ -84,7 +85,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__CommentLi__postI__14270015">
+  <Association Name="FK__CommentLi__postI__634EBE90">
     <End Role="Posts" Type="Self.Posts" Multiplicity="0..1" />
     <End Role="CommentLikes" Type="Self.CommentLikes" Multiplicity="*" />
     <ReferentialConstraint>
@@ -96,9 +97,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__CommentLi__userI__5FB337D6">
-    <End Role="Users" Type="Self.Users" Multiplicity="1" />
-    <End Role="CommentLikes" Type="Self.CommentLikes" Multiplicity="0..1" />
+  <Association Name="FK__CommentLi__userI__6442E2C9">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="CommentLikes" Type="Self.CommentLikes" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Users">
         <PropertyRef Name="Id" />
@@ -237,15 +238,15 @@
     <EntitySet Name="PostPhotos" EntityType="Self.PostPhotos" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Posts" EntityType="Self.Posts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK__CommentLi__comme__3C69FB99" Association="Self.FK__CommentLi__comme__3C69FB99">
+    <AssociationSet Name="FK__CommentLi__comme__625A9A57" Association="Self.FK__CommentLi__comme__625A9A57">
       <End Role="Comments" EntitySet="Comments" />
       <End Role="CommentLikes" EntitySet="CommentLikes" />
     </AssociationSet>
-    <AssociationSet Name="FK__CommentLi__postI__14270015" Association="Self.FK__CommentLi__postI__14270015">
+    <AssociationSet Name="FK__CommentLi__postI__634EBE90" Association="Self.FK__CommentLi__postI__634EBE90">
       <End Role="Posts" EntitySet="Posts" />
       <End Role="CommentLikes" EntitySet="CommentLikes" />
     </AssociationSet>
-    <AssociationSet Name="FK__CommentLi__userI__5FB337D6" Association="Self.FK__CommentLi__userI__5FB337D6">
+    <AssociationSet Name="FK__CommentLi__userI__6442E2C9" Association="Self.FK__CommentLi__userI__6442E2C9">
       <End Role="Users" EntitySet="Users" />
       <End Role="CommentLikes" EntitySet="CommentLikes" />
     </AssociationSet>

@@ -29,7 +29,7 @@
                         <p class="text-justify">@Html.DisplayFor(postContent => item.content)</p>
                         <hr>
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex flex-row icons d-flex align-items-center"><button class="btn btn-outline-primary" style="margin-right:5px" onclick="Like(@item.Id)">Like</button> <button class="btn btn-outline-danger" style="margin-right:5px">Dislike</button> <span class="muted-color"><span id="like_@item.Id">@item.PostLikes.Count</span> Like(s)</span> </div>
+                            <div class="d-flex flex-row icons d-flex align-items-center"><button class="btn btn-outline-primary " style="margin-right:5px" id="likeb_@item.Id" onclick="Like(@item.Id)">Like</button> <button class="btn btn-outline-danger" style="margin-right:5px">Dislike</button> <span class="muted-color"><span id="like_@item.Id">@item.PostLikes.Count</span> Like(s)</span> </div>
                             <div class="d-flex flex-row muted-color"> <span>@item.Comments.Count comment(s)</span></div>
                         </div>
                         <hr>
@@ -40,7 +40,7 @@
                                     <img src="@Url.Content(comment.User.Photo)" width="40" class="rounded-image mr">
                                     <div class="d-flex flex-column ml-2">
                                         <span class="name">@comment.User.Fname @comment.User.Lname</span> <small class="comment-txt">@comment.content</small>
-                                        <div class="d-flex flex-row align-items-center status"> <button class="btn" style="margin-right:5px" onclick="Likecomment(@item.Id,@comment.Id)">Like</button> <span class="muted-color"><span id="likeco_@item.Id">@item.CommentLikes.Count</span> Like(s)</span><small>@comment.Cdate</small> </div>
+                                        <div class="d-flex flex-row align-items-center status"> <button class="btn" style="margin-right:5px" id="likecb_@comment.Id" onclick="Likecomment(@item.Id,@comment.Id)">Like</button> <span class="muted-color"><span id="likeco_@comment.Id">@comment.CommentLikes.Count</span> Like(s)</span><small>@comment.Cdate</small> </div>
                                     </div>
                                 </div>
                             }
@@ -80,9 +80,17 @@
                         x = parseInt(x);
                         x = x + 1;
                         $("#like_" + id).text(x.toString());
+                        $("#likeb_" + id).removeClass("btn-outline-primary");
+                        $("#likeb_" + id).addClass("btn-primary");
                     }
                     else {
-                        alert("we have a problem!")
+                        var x = $("#like_" + id).text();
+                        x = parseInt(x);
+                        x = x - 1;
+                        $("#like_" + id).text(x.toString());
+                        $("#likeb_" + id).removeClass("btn-primary");
+                        $("#likeb_" + id).addClass("btn-outline-primary");
+
                     }
                     
                 },
@@ -99,10 +107,15 @@
                         var x = $("#likeco_" + comid).text();
                         x = parseInt(x);
                         x = x + 1;
-                        $("#likeco_" + id).text(x.toString());
+                        $("#likeco_" + comid).text(x.toString());
+                        $("likecb_" + comid).removeClass("btn-primary");
                     }
                     else {
-                        alert("we have a problem!")
+                        var x = $("#likeco_" + comid).text();
+                        x = parseInt(x);
+                        x = x - 1;
+                        $("#likeco_" + comid).text(x.toString());
+                        $("likecb_" + comid).addClass("btn-primary");
                     }
 
                 },

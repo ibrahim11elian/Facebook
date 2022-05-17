@@ -14,12 +14,13 @@ namespace Facebook.Models
     
     public partial class CommentLike
     {
+        public int Id { get; set; }
         public Nullable<int> commentID { get; set; }
-        public int userID { get; set; }
         public Nullable<int> postID { get; set; }
+        public Nullable<int> userID { get; set; }
     
         public virtual Comment Comment { get; set; }
-        public virtual User User { get; set; }
         public virtual Post Post { get; set; }
+        public virtual User User { get; set; }
     }
 }

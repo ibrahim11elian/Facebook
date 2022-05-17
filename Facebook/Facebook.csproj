@@ -291,6 +291,7 @@
     <Content Include="Views\Profile\Delete.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Profile\SearchUser.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

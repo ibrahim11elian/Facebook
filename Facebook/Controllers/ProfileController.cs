@@ -204,23 +204,74 @@ namespace Facebook.Controllers
 
         public ActionResult Like(int id)
         {
-            PostLike like = new PostLike();
-            like.postID = id;
-            like.userID = int.Parse(Session["id"].ToString());
-            db.PostLikes.Add(like);
-            db.SaveChanges();
-            return Json(new { cod = 200 }, JsonRequestBehavior.AllowGet);
+            var likes = db.PostLikes.Where(l => l.postID == id).FirstOrDefault();
+            if(likes == null)
+            {
+                PostLike like = new PostLike();
+                like.postID = id;
+                like.userID = int.Parse(Session["id"].ToString());
+                db.PostLikes.Add(like);
+                db.SaveChanges();
+                return Json(new { cod = 200 }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                db.PostLikes.Remove(likes);
+                db.SaveChanges();
+                return Json(new { cod = 500 }, JsonRequestBehavior.AllowGet);
+            }
+
+            
         }
 
         public ActionResult LikeComment(int id,int comid)
         {
-            CommentLike like = new CommentLike();
-            like.postID = id;
-            like.commentID = comid;
-            like.userID = int.Parse(Session["id"].ToString());
-            db.CommentLikes.Add(like);
-            db.SaveChanges();
-            return Json(new { cod = 200 }, JsonRequestBehavior.AllowGet);
+            var likes = db.CommentLikes.Where(l => l.postID == id).FirstOrDefault();
+            if (likes == null)
+            {
+                CommentLike like = new CommentLike();
+                like.postID = id;
+                like.commentID = comid;
+                like.userID = int.Parse(Session["id"].ToString());
+                db.CommentLikes.Add(like);
+                db.SaveChanges();
+                return Json(new { cod = 200 }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                db.CommentLikes.Remove(likes);
+                db.SaveChanges();
+                return Json(new { cod = 500 }, JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+
+        public ActionResult SearchUser()
+        {
+
+            var AllUsers = db.Users.ToList();
+            List<User> SearchResult = new List<User>();
+            var mail = HttpContext.Request.Form["mail"];
+            foreach (var i in AllUsers)
+            {
+                if (mail == i.Email)
+                {
+                    SearchResult.Add(i);
+                    return View(SearchResult);
+                }
+                else
+                {
+                    ViewBag.error = "This Email is not found";
+                }
+            }
+
+            return View(SearchResult);
+
+        }
+
+        public ActionResult SendRequest(int id)
+        {
+            return RedirectToAction("Index",new {id = Session["id"] });
         }
 
         protected override void Dispose(bool disposing)
