@@ -2,11 +2,17 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var userid = int.Parse(Session["id"].ToString());
+    var img = Model.Where(i => i.User.Id == userid).FirstOrDefault();
 }
 <link href="~/Content/home.css" rel="stylesheet" crossorigin="anonymous">
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
+<div class="card text-center">
+    <div class="card-body">
+        <h5 class="card-title">Write Something Awesome</h5>
+        <a href="@Url.Action("Create")" class="btn btn-primary">Write Post</a>
+    </div>
+</div>
 
 @foreach (var item in Model)
 {
@@ -29,7 +35,18 @@
                         <p class="text-justify">@Html.DisplayFor(postContent => item.content)</p>
                         <hr>
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex flex-row icons d-flex align-items-center"><button class="btn btn-outline-primary " style="margin-right:5px" id="likeb_@item.Id" onclick="Like(@item.Id)">Like</button> <button class="btn btn-outline-danger" style="margin-right:5px">Dislike</button> <span class="muted-color"><span id="like_@item.Id">@item.PostLikes.Count</span> Like(s)</span> </div>
+                            <div class="d-flex flex-row icons d-flex align-items-center">
+                                @if (item.PostLikes.Where(i => i.userID == userid).FirstOrDefault() == null)
+                                {
+                                    <button class="btn  btn-outline-primary " style="margin-right:5px" id="likeb_@item.Id" onclick="Like(@item.Id)">Like</button>
+
+                                }
+                                else
+                                {
+                                    <button class="btn  btn-primary " style="margin-right:5px" id="likeb_@item.Id" onclick="Like(@item.Id)">Like</button>
+                                }
+                                <button class="btn btn-outline-danger" style="margin-right:5px">Dislike</button> <span class="muted-color"><span id="like_@item.Id">@item.PostLikes.Count</span> Like(s)</span>
+                            </div>
                             <div class="d-flex flex-row muted-color"> <span>@item.Comments.Count comment(s)</span></div>
                         </div>
                         <hr>

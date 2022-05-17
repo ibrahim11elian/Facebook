@@ -20,9 +20,60 @@ namespace Facebook.Controllers
         {
             if (Session["user"] != null)
             {
+                
+                //var user = db.Users.Where(u => u.Id == id).FirstOrDefault();
 
-                var user = db.Users.Where(use => use.Id == id).FirstOrDefault();
-                var posts = db.Posts.Where(post => post.userID == user.Id).ToList();
+                var freinds = db.Friends.ToList();
+                List<User> users = new List<User>();
+                foreach (var i in freinds)
+                {
+                    if (i.friendID == id)
+                    {
+                        var a = db.Users.Find(i.userID);
+                        users.Add(a);
+                    }
+                    else if (i.userID == id)
+                    {
+                        var u = db.Users.Find(i.friendID);
+                        users.Add(u);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                List<Post> post = new List<Post>();
+                foreach (var u in users)
+                {
+                    foreach(var p in u.Posts)
+                    post.Add(p);
+                }
+
+                List<Post> posts = new List<Post>();
+                foreach (var p in post)
+                {
+                    if (p.privacy == "Public")
+                    {
+                        posts.Add(p);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                var myposts = db.Posts.Where(pos => pos.userID == id).ToList();
+                foreach(var p in myposts)
+                {
+                    if (p.privacy == "Public")
+                    {
+                        posts.Add(p);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
                 return View(posts);
             }
             else
@@ -137,7 +188,7 @@ namespace Facebook.Controllers
 
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Profile", new {id =  user.Id});
             
         }
 

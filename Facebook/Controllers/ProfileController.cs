@@ -175,8 +175,40 @@ namespace Facebook.Controllers
             from photos in db.PostPhotos
             where photos.postID == post.Id
             select photos;
-            
-            foreach(var photo in deletephoto)
+
+            var deletecommentlike =
+            from commentslikes in db.CommentLikes
+            where commentslikes.postID == post.Id
+            select commentslikes;
+
+            foreach (var l in deletecommentlike)
+            {
+                db.CommentLikes.Remove(l);
+            }
+
+            var deletecomment =
+            from comments in db.Comments
+            where comments.postID == post.Id
+            select comments;
+
+            foreach (var c in deletecomment)
+            {
+                db.Comments.Remove(c);
+            }
+
+            var deletelikes =
+            from likes in db.PostLikes
+            where likes.postID == post.Id
+            select likes;
+
+
+
+            foreach (var l in deletelikes)
+            {
+                db.PostLikes.Remove(l);
+            }
+
+            foreach (var photo in deletephoto)
             {
                 db.PostPhotos.Remove(photo);
             }
@@ -204,24 +236,38 @@ namespace Facebook.Controllers
 
         public ActionResult Like(int id)
         {
-            var likes = db.PostLikes.Where(l => l.postID == id).FirstOrDefault();
-            if(likes == null)
+            var likes = db.PostLikes.Where(l => l.postID == id).ToList();
+            var userid = int.Parse(Session["id"].ToString());
+
+            if (likes == null)
             {
                 PostLike like = new PostLike();
                 like.postID = id;
-                like.userID = int.Parse(Session["id"].ToString());
+                like.userID = userid;
                 db.PostLikes.Add(like);
                 db.SaveChanges();
                 return Json(new { cod = 200 }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                db.PostLikes.Remove(likes);
+                foreach (var i in likes)
+                {
+                    if (i.postID == id && i.userID == userid)
+                    {
+                        db.PostLikes.Remove(i);
+                        db.SaveChanges();
+                        return Json(new { cod = 500 }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                PostLike like = new PostLike();
+                like.postID = id;
+                like.userID = userid;
+                db.PostLikes.Add(like);
                 db.SaveChanges();
-                return Json(new { cod = 500 }, JsonRequestBehavior.AllowGet);
+                return Json(new { cod = 200 }, JsonRequestBehavior.AllowGet);
             }
 
-            
+
         }
 
         public ActionResult LikeComment(int id,int comid)
@@ -271,8 +317,122 @@ namespace Facebook.Controllers
 
         public ActionResult SendRequest(int id)
         {
-            return RedirectToAction("Index",new {id = Session["id"] });
+            FriendRequest requests = new FriendRequest();
+            var user = int.Parse(Session["id"].ToString());
+            var req = db.FriendRequests.Where(f => f.requestID == id && f.userID == user).FirstOrDefault();
+            if(req == null)
+            {
+                requests.requestID = id;
+                requests.userID = int.Parse(Session["id"].ToString());
+                db.FriendRequests.Add(requests);
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = Session["id"] });
+            }
+            else
+            {
+                return RedirectToAction("Index", new { id = Session["id"] });
+            }
         }
+
+        public ActionResult FriendRquests(int id)
+        {
+            var requests = db.FriendRequests.Where(req => req.requestID == id).ToList();
+            List<User> users = new List<User>();
+            foreach(var i in requests)
+            {
+                var u = db.Users.Find(i.userID);
+                users.Add(u);
+            }
+            return View(users);
+        }
+
+        public ActionResult AcceptRequest(int id)
+        {
+            var userid = int.Parse(Session["id"].ToString());
+            Friend newfriend = new Friend();
+            var request = db.FriendRequests.Where(req => req.requestID == userid).FirstOrDefault();
+            newfriend.friendID = request.requestID;
+            newfriend.userID = id;
+            db.Friends.Add(newfriend);
+            db.FriendRequests.Remove(request);
+            db.SaveChanges();
+
+            return RedirectToAction("Index", new { id = Session["id"] });
+        }
+
+        public ActionResult DeleteRequest(int id)
+        {
+            Friend newfriend = new Friend();
+            var request = db.FriendRequests.Where(req => req.userID == id).FirstOrDefault();
+            db.FriendRequests.Remove(request);
+            db.SaveChanges();
+
+            return RedirectToAction("Index", new { id = Session["id"] });
+        }
+
+        public ActionResult Friends(int id)
+        {
+            var freinds = db.Friends.ToList();
+            List<User> users = new List<User>();
+            foreach (var i in freinds)
+            {
+                if (i.friendID == id)
+                {
+                    var a = db.Users.Find(i.userID);
+                    users.Add(a);
+                }
+                else if(i.userID == id)
+                {
+                    var u = db.Users.Find(i.friendID);
+                    users.Add(u);  
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            return View(users);
+        }
+
+        public ActionResult DeleteFriend(int id)
+        {
+            var user = db.Friends.Where(req => req.friendID == id).FirstOrDefault();
+
+            db.Friends.Remove(user);
+            db.SaveChanges();
+
+            return RedirectToAction("Index", new { id = Session["id"] });
+        }
+
+        public ActionResult ViewProfile(int id)
+        {
+
+            if (Session["user"] != null)
+            {
+                var AllPosts = db.Posts.Where(p => p.userID == id).OrderByDescending(x => x.date).ToList();
+                List<Post> posts = new List<Post>();
+
+                foreach (var post in AllPosts)
+                {
+                    if(post.privacy == "Public")
+                    {
+                        posts.Add(post);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                //var posts = db.Posts.Where(post => post.userID == id).OrderByDescending(x => x.date).ToList();
+                return View(posts);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Facebook");
+            }
+        }
+
 
         protected override void Dispose(bool disposing)
         {

@@ -6,19 +6,13 @@
     <edmx:Diagrams>
       <Diagram DiagramId="4abeed1757114b6da14bc90715a4b0e6" Name="Diagram1">
         <EntityTypeShape EntityType="FacebookDatabaseModel.Comment" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="FacebookDatabaseModel.Friend" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
         <EntityTypeShape EntityType="FacebookDatabaseModel.PostPhoto" Width="1.5" PointX="5.25" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FacebookDatabaseModel.Post" Width="1.5" PointX="3" PointY="16.375" IsExpanded="true" />
         <EntityTypeShape EntityType="FacebookDatabaseModel.User" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__Comments__postID__37A5467C" ManuallyRouted="false" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__Comments__userID__5EBF139D" ManuallyRouted="false" />
-        <AssociationConnector Association="FacebookDatabaseModel.FK__Friends__userID__60A75C0F" ManuallyRouted="false" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__PostPhoto__postI__2B3F6F97" ManuallyRouted="false" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__Posts__userID__5CD6CB2B" ManuallyRouted="false" />
-        <AssociationConnector Association="FacebookDatabaseModel.FK__Friends__FriendI__05D8E0BE" />
-        <EntityTypeShape EntityType="FacebookDatabaseModel.FriendRequest" Width="1.5" PointX="3" PointY="4.5" />
-        <AssociationConnector Association="FacebookDatabaseModel.FK__FriendReq__Reque__06CD04F7" />
-        <AssociationConnector Association="FacebookDatabaseModel.FK__FriendReq__UserI__07C12930" />
         <EntityTypeShape EntityType="FacebookDatabaseModel.PostLike" Width="1.5" PointX="8.25" PointY="14.875" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__PostLikes__postI__40058253" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__PostLikes__userI__40F9A68C" />
@@ -26,6 +20,12 @@
         <AssociationConnector Association="FacebookDatabaseModel.FK__CommentLi__comme__625A9A57" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__CommentLi__postI__634EBE90" />
         <AssociationConnector Association="FacebookDatabaseModel.FK__CommentLi__userI__6442E2C9" />
+        <EntityTypeShape EntityType="FacebookDatabaseModel.FriendRequest" Width="1.5" PointX="3" PointY="7.375" />
+        <AssociationConnector Association="FacebookDatabaseModel.FK__FriendReq__reque__756D6ECB" />
+        <AssociationConnector Association="FacebookDatabaseModel.FK__FriendReq__userI__76619304" />
+        <EntityTypeShape EntityType="FacebookDatabaseModel.Friend" Width="1.5" PointX="3" PointY="10.375" />
+        <AssociationConnector Association="FacebookDatabaseModel.FK__Friends__friendI__0880433F" />
+        <AssociationConnector Association="FacebookDatabaseModel.FK__Friends__userID__09746778" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

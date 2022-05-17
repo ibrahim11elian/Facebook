@@ -12,14 +12,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Friends">
-      <EntityTypeMapping TypeName="FacebookDatabaseModel.Friend">
-        <MappingFragment StoreEntitySet="Friends">
-          <ScalarProperty Name="FriendID" ColumnName="FriendID" />
-          <ScalarProperty Name="userID" ColumnName="userID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="PostPhotos">
       <EntityTypeMapping TypeName="FacebookDatabaseModel.PostPhoto">
         <MappingFragment StoreEntitySet="PostPhotos">
@@ -55,14 +47,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="FriendRequests">
-      <EntityTypeMapping TypeName="FacebookDatabaseModel.FriendRequest">
-        <MappingFragment StoreEntitySet="FriendRequests">
-          <ScalarProperty Name="UserID" ColumnName="UserID" />
-          <ScalarProperty Name="RequestID" ColumnName="RequestID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="PostLikes">
       <EntityTypeMapping TypeName="FacebookDatabaseModel.PostLike">
         <MappingFragment StoreEntitySet="PostLikes">
@@ -78,6 +62,24 @@
           <ScalarProperty Name="userID" ColumnName="userID" />
           <ScalarProperty Name="postID" ColumnName="postID" />
           <ScalarProperty Name="commentID" ColumnName="commentID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FriendRequests">
+      <EntityTypeMapping TypeName="FacebookDatabaseModel.FriendRequest">
+        <MappingFragment StoreEntitySet="FriendRequests">
+          <ScalarProperty Name="userID" ColumnName="userID" />
+          <ScalarProperty Name="requestID" ColumnName="requestID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Friends">
+      <EntityTypeMapping TypeName="FacebookDatabaseModel.Friend">
+        <MappingFragment StoreEntitySet="Friends">
+          <ScalarProperty Name="userID" ColumnName="userID" />
+          <ScalarProperty Name="friendID" ColumnName="friendID" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

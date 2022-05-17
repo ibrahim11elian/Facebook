@@ -1,0 +1,157 @@
+﻿@model IEnumerable<Facebook.Models.Post>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userid = int.Parse(Session["id"].ToString());
+}
+<link href="~/Content/home.css" rel="stylesheet" crossorigin="anonymous">
+
+@foreach (var item in Model)
+{
+    <div class="container mt-5 mb-5 " id="post_@item.Id">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="d-flex justify-content-between p-2 px-3">
+                        <div class="d-flex flex-row align-items-center">
+                            <img src="@Url.Content(item.User.Photo)" width="50" class="rounded-circle mr">
+                            <div class="d-flex flex-column ml-2"> <span class="font-weight-bold">@Url.Content(item.User.Fname) @Url.Content(item.User.Lname)</span> <small class="text-primary">@Html.DisplayFor(postContent => item.date)</small> </div>
+                        </div>
+                        <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2"></small><a href="@Url.Action("Edit", "Profile", new {Id = item.Id})"><i class="fa fa-ellipsis-h ml"></i></a></div>
+                    </div>
+                    @foreach (var photo in item.PostPhotos)
+                    {
+                        <img src="@Url.Content(photo.pphoto)" class="img-fluid">
+                    }
+                    <div class="p-2">
+                        <p class="text-justify">@Html.DisplayFor(postContent => item.content)</p>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex flex-row icons d-flex align-items-center">
+                                @if (item.PostLikes.Where(i => i.userID == userid).FirstOrDefault() == null)
+                                {
+                                    <button class="btn  btn-outline-primary " style="margin-right:5px" id="likeb_@item.Id" onclick="Like(@item.Id)">Like</button>
+
+                                }else{ 
+                                    <button class="btn  btn-primary " style="margin-right:5px" id="likeb_@item.Id" onclick="Like(@item.Id)">Like</button>
+                                }
+
+                                <button class="btn btn-outline-danger" style="margin-right:5px">Dislike</button> <span class="muted-color"><span id="like_@item.Id">@item.PostLikes.Count</span> Like(s)</span>
+                            </div>
+                            <div class="d-flex flex-row muted-color"> <span>@item.Comments.Count comment(s)</span></div>
+                        </div>
+                        <hr>
+                        <div class="comments" id="comments">
+                            @foreach (var comment in item.Comments)
+                            {
+                                <div class="d-flex flex-row mb-2 mr">
+                                    <img src="@Url.Content(comment.User.Photo)" width="40" class="rounded-image mr">
+                                    <div class="d-flex flex-column ml-2">
+                                        <span class="name">@comment.User.Fname @comment.User.Lname</span> <small class="comment-txt">@comment.content</small>
+                                        <div class="d-flex flex-row align-items-center status"> <button class="btn" style="margin-right:5px" id="likecb_@comment.Id" onclick="Likecomment(@item.Id,@comment.Id)">Like</button> <span class="muted-color"><span id="likeco_@comment.Id">@comment.CommentLikes.Count</span> Like(s)</span><small>@comment.Cdate</small> </div>
+                                    </div>
+                                </div>
+                            }
+
+                            <form id="id_@item.Id" method="post" action=@Url.Action("AddComment","Profile")>
+                                <div class="comment-input">
+                                    <input type="text" name="commentc" class="form-control">
+                                    <input type="number" id="txtAge" name="postid" value=@item.Id style="display:none" />
+                                    <div id="addc" class="fonts"><button type="submit" class="btn">Add Comment</button></div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts
+{
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+        function Like(id) {
+            $.ajax({
+
+                type: "GET",
+                url: "/Profile/Like/" + id,
+                success: function (response) {
+                    if (response.cod == 200) {
+                        var x = $("#like_" + id).text();
+                        x = parseInt(x);
+                        x = x + 1;
+                        $("#like_" + id).text(x.toString());
+                        $("#likeb_" + id).removeClass("btn-outline-primary");
+                        $("#likeb_" + id).addClass("btn-primary");
+                    }
+                    else {
+                        var x = $("#like_" + id).text();
+                        x = parseInt(x);
+                        x = x - 1;
+                        $("#like_" + id).text(x.toString());
+                        $("#likeb_" + id).removeClass("btn-primary");
+                        $("#likeb_" + id).addClass("btn-outline-primary");
+
+                    }
+
+                },
+
+            });
+        }
+        function Likecomment(postid,comid) {
+            $.ajax({
+
+                type: "GET",
+                url: "/Profile/LikeComment?id=" + postid +"&comid="+ comid,
+                success: function (response) {
+                    if (response.cod == 200) {
+                        var x = $("#likeco_" + comid).text();
+                        x = parseInt(x);
+                        x = x + 1;
+                        $("#likeco_" + comid).text(x.toString());
+                        $("likecb_" + comid).removeClass("btn-primary");
+                    }
+                    else {
+                        var x = $("#likeco_" + comid).text();
+                        x = parseInt(x);
+                        x = x - 1;
+                        $("#likeco_" + comid).text(x.toString());
+                        $("likecb_" + comid).addClass("btn-primary");
+                    }
+
+                },
+
+            });
+        }
+
+
+        //$(document).ready(function () {
+
+        //    $("#addc").click(function () {
+
+        //        ncomment = $("#id_").serialize();
+        //        $.ajax({
+
+        //            type: "POST",
+        //            url: "/Profile/AddComment",
+        //            data: ncomment,
+        //            success: function (response) {
+        //                alert("comment added ");
+        //            },
+
+        //        })
+
+        //    });
+
+        //});
+    </script>
+
+}
+

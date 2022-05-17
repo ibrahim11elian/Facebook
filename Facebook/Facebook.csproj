@@ -292,6 +292,9 @@
     <Content Include="Views\Profile\Edit.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\SearchUser.cshtml" />
+    <Content Include="Views\Profile\FriendRquests.cshtml" />
+    <Content Include="Views\Profile\Friends.cshtml" />
+    <Content Include="Views\Profile\ViewProfile.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
